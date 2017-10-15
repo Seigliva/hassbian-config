@@ -1,6 +1,5 @@
 #!/bin/bash
 #Scrtipt details
-SCRIPTVERSION=1.0.0
 DESC_SHORT="Template installation script."
 DESC_LONG="Template installation script for use with hassbian-config."
 CONSEPT_BY="Ludeeus <https://github.com/ludeeus>"

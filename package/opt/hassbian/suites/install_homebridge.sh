@@ -1,6 +1,5 @@
 #!/bin/bash
 #Scrtipt details
-SCRIPTVERSION=1.0.0
 DESC_SHORT="Installs and configure homebridge for Home Assistant."
 DESC_LONG="Installs and configure homebridge for Home Assistant, This will allow you to use HomeKit enabled devices to controll Home Assistant."
 CONSEPT_BY="Ludeeus <https://github.com/ludeeus>"

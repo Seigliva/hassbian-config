@@ -1,11 +1,29 @@
 #!/bin/bash
 SUITE_INSTALL_DIR=/opt/hassbian/suites
+SUITE_CONTROL_DIR=/opt/hassbian/control
 GITHUBREPO=ludeeus/hassbian-config/master
 
 function install-suite {
-   source $SUITE_INSTALL_DIR/install_$1.sh
-   $1-install-package
-   return 0
+  if [ ! -f $SUITE_CONTROL_DIR/$1 ]; then
+    touch $SUITE_CONTROL_DIR/$1
+    echo "SCRIPTSTATE=uninstalled" > $SUITE_CONTROL_DIR/$1
+  fi
+  SUITESTATE=$(cat $SUITE_CONTROL_DIR/$1 | grep SCRIPTSTATE | awk -F'=' '{print $2}')
+  if [ "$SUITESTATE" == "installed" ]; then
+    echo "$1 is already installed..."
+    echo -n "Do you want to proceed? [y/N]"
+    read response
+    if [ "$response" == "y" ]; then
+      source $SUITE_INSTALL_DIR/install_$1.sh
+      $1-install-package
+      sed -i -- 's/SCRIPTSTATE='$SUITESTATE'/SCRIPTSTATE=installed/g' $SUITE_CONTROL_DIR/$1
+    fi
+  else
+    source $SUITE_INSTALL_DIR/install_$1.sh
+    $1-install-package
+    sed -i -- 's/SCRIPTSTATE='$SUITESTATE'/SCRIPTSTATE=installed/g' $SUITE_CONTROL_DIR/$1
+  fi
+  return 0
 }
 
 function upgrade-suite {
@@ -30,6 +48,17 @@ function suite-upgradeable {
   return 0
 }
 
+function show-installed-suites {
+  INSTALLERS=$(find $SUITE_CONTROL_DIR/ -maxdepth 1 -type f | grep -v 'homeassistant' | awk -F'/|_' ' {print $NF}' | awk -F. '{print $1}')
+  for i in $INSTALLERS
+  do
+  STATE=$(cat $SUITE_CONTROL_DIR/$i | grep SCRIPTSTATE=installed | awk -F'=' '{print $2}')
+  if [ "$STATE" != "" ]; then
+  echo "$i:" $STATE
+  fi
+  done
+  return 0
+}
 if [ $# -lt 1 ]
 then
    echo "Wrong command, try again."
@@ -40,11 +69,15 @@ SUITE=$2
 
 case $COMMAND in
 "install")
-      install-suite $SUITE
+    install-suite $SUITE
    exit
    ;;
 "upgrade")
-     upgrade-suite $SUITE
+    upgrade-suite $SUITE
+  exit
+  ;;
+"show-installed")
+    show-installed-suites
   exit
   ;;
 *)
