@@ -1,6 +1,5 @@
 #!/bin/bash
 #Scrtipt details
-SCRIPTVERSION=1.0.0
 DESC_SHORT="Upgrade script for Python."
 DESC_LONG="Upgrades python to 3.6 and reinstalls Home Assistant with that."
 CONSEPT_BY="Ludeeus <https://github.com/ludeeus>"
@@ -14,7 +13,7 @@ function python-upgrade-package {
 	echo "Original concept by" $CONSEPT_BY
 	if [ "$MODIFIED_BY" != "" ];then echo "Modified by" $MODIFIED_BY; fi
 	echo ""
-  
+
   echo "Installing Python 3.6."
   sudo apt-get -y update
   sudo apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
