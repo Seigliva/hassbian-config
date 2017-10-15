@@ -1,0 +1,9 @@
+language: bash
+sudo: required
+dist: trusty
+before_script:
+    - sudo apt update
+    - sudo apt install -y python3.4-venv
+
+script:
+    - sudo bash travis.sh

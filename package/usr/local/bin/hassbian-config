@@ -1,0 +1,36 @@
+#!/bin/bash
+SUITE_INSTALL_DIR=/opt/hassbian/suites
+
+function install-suite {
+   source $SUITE_INSTALL_DIR/install_$1.sh
+   $1-install-package
+   return 0
+}
+
+function upgrade-suite {
+   source $SUITE_INSTALL_DIR/upgrade_$1.sh
+   $1-upgrade-package
+   return 0
+}
+
+if [ $# -lt 1 ]
+then
+   usage
+   exit
+fi
+COMMAND=$1
+SUITE=$2
+
+case $COMMAND in
+"install")
+      install-suite $SUITE
+   exit
+   ;;
+"upgrade")
+     upgrade-suite $SUITE
+  exit
+  ;;
+*)
+   exit
+   ;;
+esac
