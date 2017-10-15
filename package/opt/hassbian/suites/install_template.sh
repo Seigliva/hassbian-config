@@ -1,44 +1,42 @@
 #!/bin/bash
-# See more examples here:
-# https://github.com/home-assistant/hassbian-scripts/tree/dev/package/opt/hassbian/suites
-#
-# When you are done and you have tested it localy, please submit an PR here:
-# https://github.com/home-assistant/hassbian-scripts/pulls
-#
-
-function template-show-short-info {
-    # Short informative description of the script.
-	# Example:
-    echo "Template for hassbian-config installation scripts..."
-}
-
-function template-show-long-info {
-    # More detailed information of the script.
-	# Example:
-    echo "Template for hassbian-config installation scripts..."
-}
-
-function template-show-copyright-info {
-    # Your 0.4 seconds of fame, this line will show up when the script runs.
-	# Example:
-	echo "Original consept by Ludeeus <https://github.com/ludeeus>"
-}
+#Scrtipt details
+SCRIPTVERSION=1.0.0
+DESC_SHORT="Template installation script."
+DESC_LONG="Template installation script for use with hassbian-config."
+CONSEPT_BY="Ludeeus <https://github.com/ludeeus>"
+MODIFIED_BY=""
 
 function template-install-package {
-template-show-long-info
-template-show-copyright-info
-#
-echo "Put installation script here :)"
-#
-echo
-echo "Installation done."
-echo
-echo "Notes to user of the script"
-echo
-echo "If you have issues with this script, please say something in the #Hassbian channel on Discord."
-echo
-return 0
+  set -e
+  suite-upgradeable #Check if there are any updates to hassbian-config.
+  echo $DESC_LONG
+  echo ""
+  echo "Original concept by" $CONSEPT_BY
+  if [ "$MODIFIED_BY" != "" ];then echo "Modified by" $MODIFIED_BY; fi
+  echo ""
+  #
+  echo "Put installation script here :)"
+  #
+  echo "Checking the installation..." #Add some sort of check to the script
+  validation=$(ps -ef | grep -v grep | grep homeassistant | wc -l)
+  if [ "$validation" != "0" ]; then
+  	echo ""
+  	echo -e "\e[32mInstallation done.\e[0m"
+  	echo ""
+    echo "Home Assistant is running."
+  	echo ""
+  	echo "If you have issues with this script, please say something in the #Hassbian channel on Discord."
+  else
+    echo -e "\e[31mInstallation failed..."
+    echo -e "\e[31mAborting..."
+  	echo -e "\e[0mIf you have issues with this script, please say something in the #Hassbian channel on Discord."
+    return 1
+  fi
+  return 0
 }
 
 # Make this script function as it always has if run standalone, rather than issue a warning and do nothing.
 [[ $0 == "$BASH_SOURCE" ]] && template-install-package
+
+#Changelog
+# 1.0.0 - Initial release
