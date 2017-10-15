@@ -56,18 +56,13 @@ sudo systemctl daemon-reload
 sudo systemctl start home-assistant@homeassistant.service
 
 echo "Checking if installation vas successful..."
-sudo -u homeassistant -H /bin/bash <<EOF
-source /srv/homeassistant/bin/activate
-python -V > /tmp/venvpythonversion
-EOF
-test=$(cat /tmp/venvpythonversion)
-if [ "$test" == "Python 3.6.3" ]; then
-    retval="0"
-    echo "Python 3.6 upgrade for Home Assistant is complete..."
+test -d "/usr/local/lib/python3.6/" && retval=0 || retval=1
+if [ "$retval" == "0" ]; then
     echo
+    echo "Python 3.6 upgrade for Home Assistant is complete..."
     echo "Upgrade is done..."
 else
-    retval="1"
+    echo
     echo "Installation failed..."
     echo "Aborting..."
     return 1
