@@ -1,7 +1,6 @@
 #!/bin/bash
 SUITE_INSTALL_DIR=/opt/hassbian/suites
 SUITE_CONTROL_DIR=/opt/hassbian/control
-GITHUBREPO=ludeeus/hassbian-config/master
 
 function install-suite {
   if [ ! -f $SUITE_CONTROL_DIR/$1 ]; then
@@ -61,6 +60,7 @@ case $COMMAND in
   exit
   ;;
 *)
+  echo "Wrong command, try again."
    exit
    ;;
 esac
