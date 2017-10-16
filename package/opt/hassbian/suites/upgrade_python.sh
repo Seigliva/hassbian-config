@@ -7,11 +7,11 @@ MODIFIED_BY=""
 
 function python-upgrade-package {
   set -e
-	echo $DESC_LONG
-	echo ""
-	echo "Original concept by" $CONSEPT_BY
-	if [ "$MODIFIED_BY" != "" ];then echo "Modified by" $MODIFIED_BY; fi
-	echo ""
+  echo $DESC_LONG
+  echo ""
+  echo "Original concept by" $CONSEPT_BY
+  if [ "$MODIFIED_BY" != "" ];then echo "Modified by" $MODIFIED_BY; fi
+  echo ""
 
   echo "Installing Python 3.6."
   sudo apt-get -y update
