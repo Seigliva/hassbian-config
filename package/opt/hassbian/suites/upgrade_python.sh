@@ -74,6 +74,3 @@ EOF
 
 # Make this script function as it always has if run standalone, rather than issue a warning and do nothing.
 [[ $0 == "$BASH_SOURCE" ]] && python-upgrade-package
-
-#Changelog
-# 1.0.0 - Initial release

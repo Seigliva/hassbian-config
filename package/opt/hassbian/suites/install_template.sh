@@ -35,6 +35,3 @@ function template-install-package {
 
 # Make this script function as it always has if run standalone, rather than issue a warning and do nothing.
 [[ $0 == "$BASH_SOURCE" ]] && template-install-package
-
-#Changelog
-# 1.0.0 - Initial release

@@ -35,5 +35,3 @@ return 0
 }
 
 [[ $_ == $0 ]] && echo "hassbian-config helper script; do not run directly, use hassbian-config install instead"
-#Changelog
-# 1.0.0 - Initial release
