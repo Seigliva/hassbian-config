@@ -7,7 +7,6 @@ MODIFIED_BY=""
 
 function hue-install-package {
   set -e
-  suite-upgradeable #Check if there are any updates to hassbian-config.
   echo $DESC_LONG
   echo ""
   echo "Original concept by" $CONSEPT_BY

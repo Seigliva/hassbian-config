@@ -32,22 +32,6 @@ function upgrade-suite {
    return 0
 }
 
-function suite-upgradeable {
-  ONLINEVERSION=$(curl -s https://raw.githubusercontent.com/$GITHUBREPO/package/DEBIAN/control | grep Version | awk '{print $2}')
-  LOCALVERSION=$(aptitude show hassbian-scripts | grep Version | awk '{print $2}')
-  if [ "$ONLINEVERSION" != "$LOCALVERSION" ]; then
-    echo""
-    echo "A New version of hassbian-config aviable."
-    echo "You have version $LOCALVERSION, and newest is $ONLINEVERSION."
-    echo -n "Do you want to upgrade hassbian-config? [y/N]"
-    read response
-    if [ "$response" == "y" ]; then
-      sudo hassbian-config upgrade hassbian-config
-    fi
-  fi
-  return 0
-}
-
 function show-installed-suites {
   INSTALLERS=$(find $SUITE_CONTROL_DIR/ -maxdepth 1 -type f | grep -v 'homeassistant' | awk -F'/|_' ' {print $NF}' | awk -F. '{print $1}')
   for i in $INSTALLERS
@@ -72,10 +56,6 @@ case $COMMAND in
     install-suite $SUITE
    exit
    ;;
-"upgrade")
-    upgrade-suite $SUITE
-  exit
-  ;;
 "show-installed")
     show-installed-suites
   exit
