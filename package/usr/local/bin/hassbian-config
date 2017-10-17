@@ -42,6 +42,18 @@ function show-installed-suites {
   done
   return 0
 }
+
+function verify-suite {
+   if [ -f "$SUITE_INSTALL_DIR/install_$1.sh" ]; then
+      retval=0
+   elif [ -f "$SUITE_INSTALL_DIR/upgrade_$1.sh" ]; then
+      retval=0
+   else
+      retval=1
+   fi
+   return $retval
+}
+
 if [ $# -lt 1 ]
 then
    echo "Wrong command, try again."
@@ -52,11 +64,40 @@ SUITE=$2
 
 case $COMMAND in
 "install")
-    install-suite $SUITE
+    if verify-suite $SUITE; then
+      install-suite $SUITE
+    else
+      echo "Suite $SUITE doesn't exist, run 'hassbian-config show' to view all available suites. "
+    fi
    exit
    ;;
+"upgrade")
+    if verify-suite $SUITE; then
+      upgrade-suite $SUITE
+    else
+      echo "Suite $SUITE doesn't exist, run 'hassbian-config show' to view all available suites. "
+    fi
+  exit
+  ;;
 "show-installed")
     show-installed-suites
+  exit
+  ;;
+"info")
+    if verify-suite $SUITE; then
+      if [ -f "$SUITE_CONTROL_DIR/$SUITE" ]; then
+        STATE=$(cat $SUITE_CONTROL_DIR/$SUITE | grep SCRIPTSTATE=installed | awk -F'=' '{print $2}')
+        echo "$SUITE:" $STATE
+      else
+        echo "Controll file for $SUITE not found, assumed state is 'uninstalled'."
+      fi
+      cat $SUITE_INSTALL_DIR/*_$SUITE.sh | grep CONSEPT_BY= | awk -F'=' '{print $2}' | tr -d '"'
+      cat $SUITE_INSTALL_DIR/*_$SUITE.sh | grep MODIFIED_BY= | awk -F'=' '{print $2}' | tr -d '"'
+      cat $SUITE_INSTALL_DIR/*_$SUITE.sh | grep DESC_SHORT= | awk -F'=' '{print $2}' | tr -d '"'
+      cat $SUITE_INSTALL_DIR/*_$SUITE.sh | grep DESC_LONG= | awk -F'=' '{print $2}' | tr -d '"'
+    else
+      echo "Suite $SUITE doesn't exist, run 'hassbian-config show' to view all available suites. "
+    fi
   exit
   ;;
 *)
