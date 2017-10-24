@@ -39,7 +39,7 @@ function python-upgrade-package {
   sudo chown homeassistant:homeassistant /srv/homeassistant
   sudo mv /srv/homeassistant_old/hassbian /srv/homeassistant/hassbian
   sudo apt-get install python3-pip python3-dev
-  sudo pip3 install --upgrade virtualenv
+  sudo pip3.6 install --upgrade virtualenv
   sudo -u homeassistant -H /bin/bash << EOF
   virtualenv -p python3.6 /srv/homeassistant
   source /srv/homeassistant/bin/activate
